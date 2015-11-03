@@ -20,19 +20,31 @@
         <![endif]-->
     </head>
     <body>
-        <div class="container" style="margin-top:20px;">
-            <div class="jumbotron"><h1>Redirect to your website</h1>  </div>
+
+    <div class="container">
+     <div class="jumbotron" style="margin-top:20px;"><h1>Statistics</h1>  </div>
+      <table class="table">
+      <tr><th>Destino</th><th>Num de visitas</th><th>% de visitas</th></tr>
+    <?php
+
             
-            <div class="list-group">
-                <button type="button" class="list-group-item"><a href="spy.php?o=index.html&d=http://www.diariodeibiza.com">Diario de Ibiza</a></button>
-                <button type="button" class="list-group-item"><a href="spy.php?o=index.html&d=http://www.meteoibiza.com">Meteoibiza</a></button>
-                <button type="button" class="list-group-item"><a href="spy.php?o=index.html&d=http://www.windfinder.com/forecast/vila_deivissa">Windfinder</a></button>
-                <button type="button" class="list-group-item"><a href="spy.php?o=index.html&d=http://www.ibizabtt.com">IbizaBTT</a></button>
-                <button type="button" class="list-group-item"><a href="spy.php?o=index.html&d=http://www.ibiza.travel/es/cicloturismo.php">Ibiza Travel</a></button>
-            </div>
-            <div class="list-group">
-                 <button type="button" class="list-group-item"><a href="stats.php">Statistics</a></button>
-            
-        </div>
-    </body>
-</html>
+              // $mysqli = new mysqli('localhost','root','','spy',33060); //local
+            	 $mysqli = new mysqli('mysql.hostinger.es','u445025416_ivo','20marina14','u445025416_espia'); //web
+                  if (!$mysqli || $mysqli->errno){
+                    die ("<h2>error connecting MYSQL<h2>"); //die treu missatge i surt pagina
+                  }
+                  $contador = $mysqli->query("SELECT destino, COUNT(*)AS num, (COUNT(*)*100)/(SELECT COUNT(*) FROM visitas)AS per
+                              FROM visitas GROUP BY destino");
+                  while (($fila = mysqli_fetch_array($contador))!=NULL){
+                        echo "<tr class=\"active\"><td>".$fila['destino']."</td><td>".$fila['num']."</td><td>".$fila['per']."</td></tr>";
+                  }
+                 
+               
+
+                 
+           
+  ?>
+</table>
+  </div>
+  </body>
+  </html>
